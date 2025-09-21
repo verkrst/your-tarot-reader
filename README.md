@@ -48,12 +48,13 @@ docker run -p 8501:8501 your-tarot-reader
 
 ## Features
 
-- 1-card and 3-card spreads; reversed cards supported.
-- **Reproducibility controls**: daily seed, custom seed, or fully random.
-- **Astrology mode**: date → Sun sign & decan → mapped pip card (deterministic).
-- Save readings to `readings.csv`; simple bar chart of most-drawn cards.
-- Tests for deck schema, draw determinism, interpretation, astrology mapping, and storage.
-- CI on push/PR; containerized with Docker.
+- **Quick or classic layouts:** pick a single-card “quick insight” or a 3-card layout that shows **Past / Present / Future**.
+- **Clear meanings:** each card displays keywords; if a card appears **reversed** (upside-down), the app uses the alternate meaning.
+- **Repeatable vs. random:** keep it random, use a **daily setting** (same result for that day), or enter a **number** to reproduce the same draw later.
+- **Date-based card (Astrology mode):** choose any calendar date and the app looks up the date’s zodiac sign and selects a matching numbered card in a consistent, rule-based way.
+- **Save & review:** save a reading to `readings.csv` with one click; the **History** table and a small **bar chart** show which cards you’ve drawn most often.
+- **Quality checks:** automated tests cover the deck format, shuffling behavior, interpretations, date-based mapping, and saving/loading history. Tests run on every push (GitHub Actions), and the app can run in Docker with a single command.
+
 
 ---
 
