@@ -25,18 +25,22 @@ streamlit run app.py
 pytest -q
 ```
 
-### Docker
-Build locally:
-```bash
-docker build -t your-tarot-reader .
-docker run -p 8501:8501 your-tarot-reader
-```
+## Docker
 
-Pull a published image (after pushing your image to Docker Hub):
 ```bash
+# run
 docker run -p 8501:8501 vkrst/your-tarot-reader:latest
-```
 
+open in your browser:
+   http://localhost:8501
+
+to save reading history on your machine, add a volume:
+ docker run -p 8501:8501 -v "$(pwd)/readings.csv:/app/readings.csv" vkrst/your-tarot-reader:latest
+
+(optional) build the image yourself instead of pulling:
+ docker build -t your-tarot-reader .
+ docker run -p 8501:8501 your-tarot-reader
+```
 ---
 
 ## Features
