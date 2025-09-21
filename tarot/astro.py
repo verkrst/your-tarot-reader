@@ -1,5 +1,16 @@
-# tarot/astro.py
-from datetime import date, datetime
+"""Map a calendar date to a Tarot pip card via Sun sign and decan.
+
+We approximate tropical zodiac date ranges and split each sign into
+three ~10-day decans. Each decan maps deterministically to one of
+the 36 pip cards (2–10 across suits).
+
+Example:
+    >>> from datetime import date
+    >>> card_from_date(date(2024, 3, 25))["name"]
+    'Two of Wands'
+"""
+
+from datetime import date
 
 NUM_TO_NAME = {2:"Two",3:"Three",4:"Four",5:"Five",6:"Six",7:"Seven",8:"Eight",9:"Nine",10:"Ten"}
 
@@ -36,6 +47,7 @@ SIGN_TO_DECAN = {
 }
 
 def _date_in_range(d: date, start, end) -> bool:
+    """Return True if ``d`` lies within [start, end], handling year wrap."""
     sm, sd = start; em, ed = end
     if sm <= em:  # normal (no year wrap)
         return (d.month, d.day) >= (sm, sd) and (d.month, d.day) <= (em, ed)
@@ -43,23 +55,23 @@ def _date_in_range(d: date, start, end) -> bool:
     return (d.month, d.day) >= (sm, sd) or (d.month, d.day) <= (em, ed)
 
 def _sign_for_date(d: date) -> str:
+    """Return the Sun sign for date ``d`` using approximate ranges."""
     for sign, start, end in SIGN_RANGES:
         if _date_in_range(d, start, end):
             return sign
-    # Fallback (shouldn't happen)
-    return "Aries"
+    return "Aries"  # fallback (should not occur)
 
 def _sign_start_date(d: date, start) -> date:
+    """Return the start date of the sign period that contains ``d``."""
     sm, sd = start
-    # Handle year wrap: if start is in Dec and d is in Jan, use previous year
     year = d.year
-    if sm == 12 and d.month == 1:
+    if sm == 12 and d.month == 1:  # handle wraparound for Capricorn
         year -= 1
     return date(year, sm, sd)
 
 def _decan_index(d: date, sign: str) -> int:
-    # days since sign start → 0..2 buckets of ~10 days
-    for s, start, end in SIGN_RANGES:
+    """Return 0, 1, or 2 for the decan bucket of date ``d`` within ``sign``."""
+    for s, start, _ in SIGN_RANGES:
         if s == sign:
             start_date = _sign_start_date(d, start)
             delta = (d - start_date).days
@@ -67,7 +79,14 @@ def _decan_index(d: date, sign: str) -> int:
     return 0
 
 def card_from_date(d: date) -> dict:
-    """Return a dict with at least name/suit/arcana for the Sun's decan on date d."""
+    """Map a calendar date to a pip card via Sun sign and decan.
+
+    Args:
+        d: Calendar date.
+
+    Returns:
+        Dict with keys: ``name``, ``suit``, ``arcana``, ``is_reversed`` (False).
+    """
     sign = _sign_for_date(d)
     decan = _decan_index(d, sign)
     suit, num = SIGN_TO_DECAN[sign][decan]

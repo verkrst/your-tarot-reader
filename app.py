@@ -1,3 +1,12 @@
+"""Streamlit UI for 'Your Tarot Reader'.
+
+Two modes are exposed:
+1) Shuffle & Draw — 1-card or 3-card spreads, optional reversed cards, seed controls.
+2) Astrology mode — date → Sun sign & decan → pip card (upright).
+
+Readings can be saved to a local history file to enable simple analytics.
+"""
+
 import streamlit as st
 import pandas as pd
 from datetime import datetime, date, timezone
