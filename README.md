@@ -27,19 +27,21 @@ pytest -q
 
 ## Docker
 
+### Run
 ```bash
-# run
 docker run -p 8501:8501 vkrst/your-tarot-reader:latest
-
-open in your browser:
-   http://localhost:8501
-
-to save reading history on your machine, add a volume:
- docker run -p 8501:8501 -v "$(pwd)/readings.csv:/app/readings.csv" vkrst/your-tarot-reader:latest
-
-(optional) build the image yourself instead of pulling:
- docker build -t your-tarot-reader .
- docker run -p 8501:8501 your-tarot-reader
+# then open http://localhost:8501
+```
+### Save history to a local file (optional)
+```bash
+docker run -p 8501:8501 \
+  -v "$(pwd)/readings.csv:/app/readings.csv" \
+  vkrst/your-tarot-reader:latest
+```
+### Build locally instead of pulling (optional)
+```bash
+docker build -t your-tarot-reader .
+docker run -p 8501:8501 your-tarot-reader
 ```
 ---
 
