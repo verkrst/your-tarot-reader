@@ -32,7 +32,7 @@ pytest -q
 docker run -p 8501:8501 vkrst/your-tarot-reader:latest
 # then open http://localhost:8501
 ```
-### Save history to a local file (optional)
+### Save history locally
 ```bash
 docker run -p 8501:8501 \
   -v "$(pwd)/readings.csv:/app/readings.csv" \
@@ -43,6 +43,7 @@ docker run -p 8501:8501 \
 docker build -t your-tarot-reader .
 docker run -p 8501:8501 your-tarot-reader
 ```
+
 ---
 
 ## Features
@@ -91,9 +92,8 @@ docker run -p 8501:8501 your-tarot-reader
 
 ## Reproducibility
 
-- Pinned dependencies in `requirements.txt`.
-- Deterministic draws when a seed is set (daily or custom).
-- Unit tests runnable via `pytest` and enforced by CI.
+This project is designed to be reproducible: dependencies are pinned in `requirements.txt`, card draws are deterministic whenever a seed is set (daily or custom), and a unit test suite runs with `pytest` and is enforced by CI to keep behavior consistent across environments.
+
 
 ---
 
